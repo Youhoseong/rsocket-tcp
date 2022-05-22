@@ -1,21 +1,21 @@
 package com.example.rsocket;
 
-import io.rsocket.core.RSocketServer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class DaemonRunner implements CommandLineRunner {
+
+    private final StreamResponser sender;
 
     @Override
     public void run(String... args) {
 
-//        RSocketServer.create(((setup, sendingSocket) -> {
-//
-//        }));
-
+        sender.doTransfer();
 
         log.info("Welcome. ");
 
@@ -23,7 +23,7 @@ public class DaemonRunner implements CommandLineRunner {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     log.info("I'm alive.");
-                    Thread.sleep(1000L);
+                    Thread.sleep(3000L);
                 } catch (InterruptedException e) {
                     break;
                 }
@@ -34,6 +34,5 @@ public class DaemonRunner implements CommandLineRunner {
         });
 
         thread.start();
-        thread.interrupt();
     }
 }
